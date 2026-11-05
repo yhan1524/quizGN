@@ -1,9 +1,8 @@
-from quiz import Quiz
+from quiz_game import QuizGame
 
-quiz = Quiz(
-    "Python에서 문자열을 감싸는 데 사용할 수 있는 것은?",
-    ['"', "'", "둘 다 가능", "둘 다 불가능"],
-    3
-)
+def main():
+    game = QuizGame()
+    game.run()
 
-quiz.display()
+if __name__ == "__main__":
+    main()
