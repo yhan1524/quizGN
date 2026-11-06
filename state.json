@@ -1,0 +1,103 @@
+[
+    {
+        "question": "5+4 = ?",
+        "choices": [
+            "9",
+            "10",
+            "8",
+            "7"
+        ],
+        "answer": 1
+    },
+    {
+        "question": "4! ?",
+        "choices": [
+            "10",
+            "24",
+            "53",
+            "22"
+        ],
+        "answer": 2
+    },
+    {
+        "question": "5 * 16 = ?",
+        "choices": [
+            "75",
+            "80",
+            "65",
+            "90"
+        ],
+        "answer": 2
+    },
+    {
+        "question": "1 cm ?",
+        "choices": [
+            "0.1m",
+            "0.001m",
+            "0.01m",
+            "100mm"
+        ],
+        "answer": 3
+    },
+    {
+        "question": "1 N ?",
+        "choices": [
+            "1kgf",
+            "1kg",
+            "1km",
+            "1 kg·m/s^2"
+        ],
+        "answer": 4
+    },
+    {
+        "question": "19 * 19 = ?",
+        "choices": [
+            "365",
+            "361",
+            "351",
+            "368"
+        ],
+        "answer": 2
+    },
+    {
+        "question": "log(10) ? ",
+        "choices": [
+            "10",
+            "11",
+            "1",
+            "1/10"
+        ],
+        "answer": 3
+    },
+    {
+        "question": "10,000,000 ?(byte) ",
+        "choices": [
+            "10 Mb",
+            "10 GB",
+            "10 KB",
+            "10 MB"
+        ],
+        "answer": 4
+    },
+    {
+        "question": "99 - 45 = ? ",
+        "choices": [
+            "54",
+            "49",
+            "144",
+            "55"
+        ],
+        "answer": 1
+    },
+    {
+        "question": "12 % 2 = ? ",
+        "choices": [
+            "6",
+            "12",
+            "0",
+            "2"
+        ],
+        "answer": 3
+    }
+                    
+]
