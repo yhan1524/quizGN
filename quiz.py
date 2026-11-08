@@ -35,3 +35,31 @@ class Quiz:
     @classmethod
     def from_dict(cls, data):
         return cls(data["question"], data["choices"], data["answer"])
+    
+from dataclasses import dataclass
+from typing import Any, Dict, List
+
+@dataclass
+class Quiz:
+    id: str
+    question: str
+    choices: List[str]
+    answer: int
+    explanation: str = ""
+    points: int = 10
+
+    @classmethod
+    def from_dict(cls, data: Dict[str, Any]) -> "Quiz":
+        required_keys = ["id", "question", "choices", "answer"]
+        for key in required_keys:
+            if key not in data:
+                raise ValueError(f"퀴즈 데이터에 '{key}' 항목이 없습니다.")
+
+        return cls(
+            id=str(data["id"]).strip(),
+            question=str(data["question"]).strip(),
+            choices=[str(choice).strip() for choice in data["choices"]],
+            answer=int(data["answer"]),
+            explanation=str(data.get("explanation", "")).strip(),
+            points=int(data.get("points", 10)),
+        )
