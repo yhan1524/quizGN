@@ -144,12 +144,15 @@ quizGN/
 - `pull` 1회 이상 사용
 - 원격 저장소와 로컬 저장소 동기화 수행
 
-### 실제 업로드 기록 작성란
-아래 항목을 실제 기록으로 바꿔서 작성하면 됩니다.
+### 실제 업로드 기록
 
 - 저장소 주소: `https://github.com/yhan1524/quizGN`
-- 최초 clone 시점: `YYYY-MM-DD HH:MM`
-- pull 수행 시점: `YYYY-MM-DD HH:MM`
+- clone 
+```bash
+```
+- pull 
+```bash
+```
 - 브랜치 이름: `main`
 - checkout 사용 내용: `git checkout`
 ```bush
