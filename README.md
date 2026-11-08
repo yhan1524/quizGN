@@ -150,16 +150,24 @@ quizGN/
 - 저장소 주소: `https://github.com/yhan1524/quizGN`
 - 최초 clone 시점: `YYYY-MM-DD HH:MM`
 - pull 수행 시점: `YYYY-MM-DD HH:MM`
-- 브랜치 이름: `feature/______________`
-- checkout 사용 내용: `git checkout __________`
-- merge 사용 내용: `git merge __________`
-- 커밋 수: `_____개`
+- 브랜치 이름: `main`
+- checkout 사용 내용: `git checkout`
+```bush
+Your branch is up to date with 'origin/main'
+```
+- merge 사용 내용: `git merge`
+```bash
+```
 - 주요 커밋 메시지:
-  - `____________________`
-  - `____________________`
-  - `____________________`
-  - `____________________`
-  - `____________________`
+```bash
+4ad2a01 HEAD@{2026-11-08 18:17:04 +0900}: commit: 수정해요
+0932ad8 HEAD@{2026-11-08 18:12:46 +0900}: commit: 세이브하기
+1fbd769 HEAD@{2026-11-08 17:12:01 +0900}: commit: 리드미수정
+57300f6 HEAD@{2026-11-08 17:03:11 +0900}: commit: 기능추가
+e43b596 HEAD@{2026-11-08 16:37:17 +0900}: commit: 중복수정
+e5ead4c HEAD@{2026-11-08 16:33:50 +0900}: commit: 안들어감
+                       ...
+```
 
 ---
 
