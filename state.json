@@ -1,4 +1,13 @@
 {
-    "high_score": 0,
-    "quizzes": []
+    "high_score": 80,
+    "quizzes": [],
+    "history": [
+        {
+            "played_at": "2026-11-08 18:12:01",
+            "selected_count": 11,
+            "score": 80,
+            "max_score": 110,
+            "hint_used_count": 0
+        }
+    ]
 }
