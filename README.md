@@ -257,13 +257,26 @@ quizGN/
 ```bash
 git checkout (브랜치명)
 ```
-![checkout](images/checkout.png)
-
 #### merge
 다른 브랜치의 변경 내용을 현재 브랜치에 합치는 것입니다.
-
 ```bash
 git merge
+```
+
+추가로 합칠 내용이 없을땐 아래 메시지가 출력됩니다.
+```bash
+Already up to date.
+```
+
+#### 
+```bash
+git checkout -b feature   # 새 브랜치 생성 후 이동
+# 코드 수정
+git add .
+git commit -m "브랜치 실습"
+
+git checkout main              # main으로 이동
+git merge feature         # feature 내용을 main에 합침
 ```
 ![merge](images/merge.png)
 
@@ -286,17 +299,18 @@ git pull origin main
 ![pull](images/pull.png)
 
 #### 주요 커밋 메시지
+
+브랜치/병합 내역을 보여줍니다.
 ```bash
-4ad2a01 HEAD@{2026-11-08 18:17:04 +0900}: commit: 수정해요
-0932ad8 HEAD@{2026-11-08 18:12:46 +0900}: commit: 세이브하기
-1fbd769 HEAD@{2026-11-08 17:12:01 +0900}: commit: 리드미수정
-57300f6 HEAD@{2026-11-08 17:03:11 +0900}: commit: 기능추가
-e43b596 HEAD@{2026-11-08 16:37:17 +0900}: commit: 중복수정
-e5ead4c HEAD@{2026-11-08 16:33:50 +0900}: commit: 안들어감
+git log --graph --oneline --decorate
+* ab2767b (HEAD -> main, feature) 브랜치 실습
+* 011c961 (origin/main, origin/HEAD) 기본문제추가
+* 7e97896 체크아웃 수정
 ...
 ```
 
-> 참고: `git log --graph --oneline --decorate` 출력이나 브랜치 그래프 스크린샷을 함께 제출하면 병합 기록을 더 명확하게 보여줄 수 있습니다.
+VScode에서는 좌측 Source Control에서도 확인할 수 있습니다.
+![graph](images/graph.png)
 
 ---
 
