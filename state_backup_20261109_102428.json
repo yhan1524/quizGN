@@ -1,0 +1,28 @@
+{
+    "high_score": 30,
+    "quizzes": [
+        {
+            "id": "user-1",
+            "question": "소문자로 변환하기 위해 사용하는 함수는 무엇인가요?",
+            "choices": [
+                "split",
+                "lower",
+                "small",
+                "upper"
+            ],
+            "answer": 2,
+            "hint": "하위로 이동해야 하겠죠?",
+            "explanation": "",
+            "points": 10
+        }
+    ],
+    "history": [
+        {
+            "played_at": "2026-11-09 10:15:14",
+            "selected_count": 3,
+            "score": 30,
+            "max_score": 30,
+            "hint_used_count": 0
+        }
+    ]
+}

@@ -100,9 +100,11 @@ python3 main.py
 
 ```text
 quizGN/
+├── images/
 ├── main.py
 ├── quiz.py
 ├── quiz_game.py
+├── default_questions.json
 ├── state.json
 ├── backups/
 └── README.md
@@ -128,7 +130,7 @@ quizGN/
 이 파일은 데이터 손실을 방지하기 위한 용도이며, 최근 10개까지만 유지됩니다.
 
 ### 기본 문제
-기본문제는 코드에 고정되어 있어 `state.json`에 저장되지 않습니다.  
+기본문제는 `default_questions`에 있어 `state.json`에 저장되지 않습니다.  
 따라서 삭제되거나 잘못 덮어써지는 일이 없습니다.
 
 ---
