@@ -252,10 +252,22 @@ quizGN/
 
 ### 실제 업로드 기록
 
-#### clone / pull 기록
-> 아래 항목은 실제 터미널 캡처 또는 로그를 추가해야 합니다.
+#### checkout
 
-- clone
+```bash
+git checkout
+```
+![checkout](images/checkout.png)
+
+#### merge
+
+```bash
+git merge
+```
+![merge](images/merge.png)
+
+#### clone
+
 원격저장소의 내용을 새로운 폴더에 그대로 복사합니다.
 
 ```bash
@@ -263,19 +275,14 @@ git clone https://github.com/yhan1524/quizGN.git
 ```
 ![clone](images/clone.png)
 
-- pull
+#### pull
+
 원격저장소에 있는 프로젝트의 변경사항을 그대로 로컬저장소에 옮겨와 자동으로 병합합니다<p>
 
 ```bash
 git pull origin main
 ```
 ![pull](images/pull.png)
-
-#### 브랜치 및 병합 기록
-```bash
-git checkout
-git merge
-```
 
 #### 주요 커밋 메시지
 ```bash
