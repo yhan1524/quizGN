@@ -253,13 +253,14 @@ quizGN/
 ### 실제 업로드 기록
 
 #### checkout
-
+다른 브랜치로 바꾸거나 예전 커밋 상태로 돌아갈 때 쓰는 명령어 입니다.
 ```bash
-git checkout
+git checkout (브랜치명)
 ```
 ![checkout](images/checkout.png)
 
 #### merge
+다른 브랜치의 변경 내용을 현재 브랜치에 합치는 것입니다.
 
 ```bash
 git merge
@@ -277,7 +278,7 @@ git clone https://github.com/yhan1524/quizGN.git
 
 #### pull
 
-원격저장소에 있는 프로젝트의 변경사항을 그대로 로컬저장소에 옮겨와 자동으로 병합합니다<p>
+원격저장소에 있는 프로젝트의 변경사항을 그대로 로컬저장소에 옮겨와 자동으로 병합합니다
 
 ```bash
 git pull origin main
