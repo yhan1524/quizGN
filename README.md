@@ -117,7 +117,7 @@ quizGN/
 ## 6. 데이터 파일 설명
 
 ### `state.json`
-사용자 퀴즈와 점수 기록이 저장되는 파일입니다.
+사용자 출제 퀴즈와 점수 기록이 저장되는 파일입니다.
 
 #### 저장 내용 예시
 - 사용자 추가 문제 목록
@@ -149,7 +149,7 @@ quizGN/
 
 ---
 
-## 8. 클래스 도입 이유
+## 8. 클래스 주요 메서드
 
 이 프로젝트에서 클래스를 사용한 이유는 **추상화와 재사용성**을 높이기 위해서입니다.
 
@@ -157,6 +157,34 @@ quizGN/
 - `QuizGame`은 퀴즈 진행 흐름을 한 곳에서 관리하므로, 메뉴나 기능이 추가되어도 전체 구조를 유지하기 쉽습니다.
 
 즉, 클래스를 사용하면 기능이 늘어나도 코드 구조가 흐트러지지 않고, 같은 형태의 데이터를 반복해서 처리하기 편해집니다.
+
+| 클래스 | 주요 메서드 | 책임 |
+|---|---|---|
+| `main` | `main()` | `QuizGame` 인스턴스를 생성하고 게임 실행을 시작함 |
+| `Quiz` | `__post_init__()` | 퀴즈 데이터의 유효성 검사 및 정리 수행 |
+| `Quiz` | `display()` | 문제와 선택지를 화면에 출력함 |
+| `Quiz` | `check_answer(user_answer)` | 사용자의 답이 정답인지 판별함 |
+| `Quiz` | `to_dict()` | 객체를 JSON 저장용 딕셔너리로 변환함 |
+| `Quiz` | `from_dict(data)` | 딕셔너리 데이터를 기반으로 `Quiz` 객체를 복원함 |
+| `QuizGame` | `__init__()` | 게임 상태 초기화, 기본 문제 로드, 저장 상태 불러오기, 시그널 등록 |
+| `QuizGame` | `default_questions()` | `default_questions.json`에서 기본 문제를 읽어옴 |
+| `QuizGame` | `is_default_quiz(quiz)` | 해당 퀴즈가 기본 문제인지 확인함 |
+| `QuizGame` | `normalize_text(text)` | 문제 비교를 위한 문자열 정규화 수행 |
+| `QuizGame` | `is_duplicate_question(question)` | 중복된 문제가 있는지 검사함 |
+| `QuizGame` | `input_menu()` | 메뉴를 출력하고 사용자 선택을 입력받음 |
+| `QuizGame` | `input_quiz_data()` | 새 퀴즈 등록에 필요한 데이터를 입력받음 |
+| `QuizGame` | `add_quiz(...)` | 새 퀴즈를 추가하고 저장함 |
+| `QuizGame` | `show_quizzes()` | 저장된 퀴즈 목록을 출력함 |
+| `QuizGame` | `play_quiz()` | 퀴즈를 출제하고 점수를 계산함 |
+| `QuizGame` | `delete_quiz()` | 선택한 퀴즈를 삭제함 |
+| `QuizGame` | `show_history()` | 게임 점수 기록을 출력함 |
+| `QuizGame` | `load_state()` | 저장된 상태를 읽어와 현재 게임 상태를 복원함 |
+| `QuizGame` | `backup_state_file()` | `state.json`을 백업하고 최근 백업만 유지함 |
+| `QuizGame` | `save_state()` | 현재 퀴즈, 최고 점수, 기록을 파일로 저장함 |
+| `QuizGame` | `update_high_score()` | 최고 점수를 갱신함 |
+| `QuizGame` | `handle_exit_signal(signum, frame)` | 종료 신호를 처리하고 저장 후 종료함 |
+| `QuizGame` | `register_signal_handlers()` | 종료 신호 핸들러를 등록함 |
+| `QuizGame` | `run()` | 메뉴 루프를 실행하며 전체 게임 흐름을 관리함 |
 
 ---
 
