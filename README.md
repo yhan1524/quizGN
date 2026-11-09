@@ -300,7 +300,9 @@ git pull origin main
 
 #### 주요 커밋 메시지
 
-브랜치/병합 내역을 보여줍니다.
+브랜치/병합 내역을 보여줍니다.<p>
+로그 화면을 종료하려면 터미널에서 'q'를 입력합니다
+
 ```bash
 git log --graph --oneline --decorate
 * ab2767b (HEAD -> main, feature) 브랜치 실습
@@ -309,7 +311,7 @@ git log --graph --oneline --decorate
 ...
 ```
 
-VScode에서는 좌측 Source Control에서도 확인할 수 있습니다.
+VScode에서는 좌측 Source Control에서도 확인할 수 있습니다.<p>
 ![graph](images/graph.png)
 
 ---
