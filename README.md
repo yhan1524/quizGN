@@ -251,18 +251,25 @@ quizGN/
 - `clone`, `pull`을 사용해 원격 저장소와 동기화
 
 ### 실제 업로드 기록
-- 저장소 주소: `https://github.com/yhan1524/quizGN`
 
 #### clone / pull 기록
 > 아래 항목은 실제 터미널 캡처 또는 로그를 추가해야 합니다.
 
-```bash
-# clone 결과 캡처를 여기에 넣기
-```
+- clone
+원격저장소의 내용을 새로운 폴더에 그대로 복사합니다.
 
 ```bash
-# pull 결과 캡처를 여기에 넣기
+git clone https://github.com/yhan1524/quizGN.git
 ```
+![clone](images/clone.png)
+
+- pull
+원격저장소에 있는 프로젝트의 변경사항을 그대로 로컬저장소에 옮겨와 자동으로 병합합니다<p>
+
+```bash
+git pull origin main
+```
+![pull](images/pull.png)
 
 #### 브랜치 및 병합 기록
 ```bash

@@ -11,11 +11,12 @@ from quiz import Quiz
 
 
 class QuizGame:
+
     def __init__(self):
         self.file_name = os.path.join(os.path.dirname(__file__), "state.json")
 
         # 기본 문제는 코드에 내장
-        self.default_quizzes = self.get_default_quizzes()
+        self.default_quizzes = self.default_quizzes()
 
         # 실제 실행 중 사용할 퀴즈 목록
         self.quizzes = []
@@ -27,93 +28,9 @@ class QuizGame:
         self.load_state()
         self.register_signal_handlers()
 
-    def get_default_quizzes(self):
-        """기본 문제 목록을 반환합니다."""
-        return [
-            Quiz(
-                id="default-1",
-                question="파이썬에서 출력에 사용하는 함수는?",
-                choices=["print()", "input()", "len()", "type()"],
-                answer=1,
-                hint="화면에 무엇인가를 보여줄 때 씁니다.",
-                explanation="파이썬의 출력 함수는 print()입니다.",
-                points=10
-            ),
-            Quiz(
-                id="default-2",
-                question="리스트의 길이를 구하는 함수는?",
-                choices=["size()", "count()", "len()", "sum()"],
-                answer=3,
-                hint="문자열 길이도 구할 수 있는 함수입니다.",
-                explanation="리스트나 문자열의 길이는 len()으로 구합니다.",
-                points=10
-            ),
-            Quiz(
-                id="default-3",
-                question="조건문에 사용하는 키워드는?",
-                choices=["for", "if", "def", "class"],
-                answer=2,
-                hint="조건에 따라 실행을 나눌 때 사용합니다.",
-                explanation="조건문은 if를 사용합니다.",
-                points=10
-            ),
-            Quiz(
-                id="default-4",
-                question="사용자로부터 값을 입력받을 때 사용하는 함수는 무엇인가요?",
-                choices=["print()", "type()", "input()", "range()"],
-                answer=3,
-                points=10
-            ),
-            Quiz(
-                id="default-5",
-                question="input() 함수로 입력받은 값의 기본 자료형은 무엇인가요?",
-                choices=["int", "float", "str", "bool"],
-                answer=3,
-                points=10
-            ),
-            Quiz(
-                id="default-6",
-                question="같은 코드를 여러 번 반복할 때 주로 사용하는 문장은 무엇인가요?",
-                choices=["if", "return", "for", "class"],
-                answer=3,
-                points=10
-            ),
-            Quiz(
-                id="default-7",
-                question="range(3)을 사용한 for문은 몇 번 반복되나요?",
-                choices=["2번", "3번", "4번", "무한 반복"],
-                answer=2,
-                points=10
-            ),
-            Quiz(
-                id="default-8",
-                question="파이썬에서 함수를 정의할 때 사용하는 키워드는 무엇인가요?",
-                choices=["func", "define", "return", "def"],
-                answer=4,
-                points=10
-            ),
-            Quiz(
-                id="default-9",
-                question="함수에서 값을 호출한 곳으로 돌려보낼 때 사용하는 키워드는 무엇인가요?",
-                choices=["break", "print", "return", "input"],
-                answer=3,
-                points=10
-            ),
-            Quiz(
-                id="default-10",
-                question="클래스(class)는 무엇을 만들기 위한 설계도라고 볼 수 있나요?",
-                choices=["객체", "반복문", "조건문", "파일"],
-                answer=1,
-                points=10
-            ),
-            Quiz(
-                id="default-11",
-                question="파일에 내용을 새로 저장할 때 open() 함수에서 주로 사용하는 모드는 무엇인가요?",
-                choices=["r", "w", "a", "x"],
-                answer=2,
-                points=10
-            )
-        ]
+    def default_quizzes():
+        with open("default_questions.json", "r", encoding="utf-8") as f:
+            return json.load(f)
 
     def is_default_quiz(self, quiz):
         """기본 문제인지 확인합니다."""
