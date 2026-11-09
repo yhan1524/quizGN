@@ -173,13 +173,14 @@ quizGN/
 | `QuizGame` | `is_duplicate_question(question)` | 중복된 문제가 있는지 검사함 |
 | `QuizGame` | `input_menu()` | 메뉴를 출력하고 사용자 선택을 입력받음 |
 | `QuizGame` | `input_quiz_data()` | 새 퀴즈 등록에 필요한 데이터를 입력받음 |
+| `QuizGame` | `input_answer(quiz)` | 퀴즈 풀이 중 정답을 입력받습니다. `h` 입력 시 힌트를 출력합니다. |
 | `QuizGame` | `add_quiz(...)` | 새 퀴즈를 추가하고 저장함 |
 | `QuizGame` | `show_quizzes()` | 저장된 퀴즈 목록을 출력함 |
 | `QuizGame` | `play_quiz()` | 퀴즈를 출제하고 점수를 계산함 |
 | `QuizGame` | `delete_quiz()` | 선택한 퀴즈를 삭제함 |
 | `QuizGame` | `show_history()` | 게임 점수 기록을 출력함 |
 | `QuizGame` | `load_state()` | 저장된 상태를 읽어와 현재 게임 상태를 복원함 |
-| `QuizGame` | `backup_state_file()` | `state.json`을 백업하고 최근 백업만 유지함 |
+| `QuizGame` | `backup_state_file()` | `state.json`을 백업하고 최근 10개의 백업만 유지함 |
 | `QuizGame` | `save_state()` | 현재 퀴즈, 최고 점수, 기록을 파일로 저장함 |
 | `QuizGame` | `update_high_score()` | 최고 점수를 갱신함 |
 | `QuizGame` | `handle_exit_signal(signum, frame)` | 종료 신호를 처리하고 저장 후 종료함 |

@@ -16,32 +16,47 @@ except ImportError:
             self.id = id
             self.question = question
             self.choices = choices
-            self.answer = answer
+            self.answer = int(answer) if str(answer).isdigit() else answer
             self.hint = hint
             self.explanation = explanation
             self.points = points
+
         def display(self):
             print(f"\nQ: {self.question}")
             for i, c in enumerate(self.choices, 1):
                 print(f"{i}. {c}")
+
         def check_answer(self, user_answer):
-            return self.answer == user_answer
+            try:
+                return int(self.answer) == int(user_answer)
+            except (TypeError, ValueError):
+                return self.answer == user_answer
+
         def to_dict(self):
             return self.__dict__
+
         @classmethod
         def from_dict(cls, data):
-            return cls(**data)
+            return cls(
+                id=data.get("id", ""),
+                question=data.get("question", ""),
+                choices=data.get("choices", []),
+                answer=data.get("answer", 1),
+                hint=data.get("hint", ""),
+                explanation=data.get("explanation", ""),
+                points=data.get("points", 10)
+            )
 
 class QuizGame:
     def __init__(self):
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.file_name = os.path.join(self.base_dir, "state.json")
 
-        # 기본 문제는 코드에 내장
         self.default_quizzes = self.default_questions()
 
-        # 실제 실행 중 사용할 퀴즈 목록
-        self.quizzes = []
+        # 기본 문제 + 사용자 문제를 함께 사용
+        self.quizzes = list(self.default_quizzes)
+
         self.score = 0
         self.high_score = 0
         self.history = []
@@ -109,22 +124,40 @@ class QuizGame:
         return input("메뉴를 선택하세요: ").strip()
 
     def input_quiz_data(self):
-        question = input("문제를 입력하세요: ").strip()
-        choices = [input(f"{i}번 선택지: ").strip() for i in range(1, 5)]
-
         while True:
-            ans = input("정답 번호(1~4): ").strip()
-            if ans.isdigit() and 1 <= int(ans) <= 4:
-                answer = int(ans)
-                break
-            print("1~4 사이의 숫자를 입력해주세요.")
+            question = input("문제를 입력하세요: ").strip()
+            if not question:
+                print("문제는 빈칸일 수 없습니다.")
+                continue
 
-        hint = input("힌트(없으면 엔터): ").strip()
-        explanation = input("해설(없으면 엔터): ").strip()
-        points = input("문제 점수(기본 10점): ").strip()
-        points = int(points) if points.isdigit() else 10
+            choices = []
+            for i in range(1, 5):
+                while True:
+                    choice = input(f"{i}번 선택지를 입력하세요: ").strip()
+                    if not choice:
+                        print("선택지는 빈칸일 수 없습니다.")
+                        continue
+                    choices.append(choice)
+                    break
 
-        return question, choices, answer, hint, explanation, points
+            answer = input("정답 번호(1~4)를 입력하세요: ").strip()
+            if answer not in ["1", "2", "3", "4"]:
+                print("정답은 1~4 중 하나여야 합니다.")
+                continue
+
+            hint = input("힌트를 입력하세요(선택): ").strip()
+            explanation = input("해설을 입력하세요(선택): ").strip()
+
+            points_input = input("점수를 입력하세요(기본값 10): ").strip()
+            if not points_input:
+                points = 10
+            elif points_input.isdigit():
+                points = int(points_input)
+            else:
+                print("점수는 숫자로 입력해야 합니다.")
+                continue
+
+            return question, choices, int(answer), hint, explanation, points
 
     def input_answer(self, quiz):
         while True:
@@ -162,7 +195,7 @@ class QuizGame:
             id=f"user-{user_count + 1}",
             question=question,
             choices=choices,
-            answer=answer,
+            answer=int(answer),
             hint=hint,
             explanation=explanation,
             points=points
@@ -207,13 +240,13 @@ class QuizGame:
             else:
                 print(f"오답입니다. 정답은 {quiz.answer}번입니다.")
 
-            print(f"\n최종 점수: {self.score}")
-            self.update_high_score()
-            self.history.append({
-                "played_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "score": self.score
-            })
-            self.save_state()
+        print(f"\n최종 점수: {self.score}")
+        self.update_high_score()
+        self.history.append({
+            "played_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "score": self.score
+        })
+        self.save_state()
 
     def delete_quiz(self):
         if not self.quizzes:
@@ -256,26 +289,28 @@ class QuizGame:
             print(f"[{h.get('played_at')}] 점수: {h.get('score')}")
 
     def load_state(self):
-        saved_quizzes = []
-        if os.path.exists(self.file_name):
-            try:
-                with open(self.file_name, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                self.high_score = data.get("high_score", 0)
-                self.history = data.get("history", [])
-                for q_data in data.get("quizzes", []):
-                    saved_quizzes.append(Quiz.from_dict(q_data))
-            except:
-                pass
+        self.quizzes = list(self.default_quizzes)
 
-        merged = []
-        seen = set()
-        for q in self.default_quizzes + saved_quizzes:
-            key = self.normalize_text(q.question)
-            if key not in seen:
-                merged.append(q)
-                seen.add(key)
-        self.quizzes = merged
+        if not os.path.exists(self.file_name):
+            return
+
+        try:
+            with open(self.file_name, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            # 예전 형식(user_quizzes)도 호환
+            loaded_quizzes = data.get("quizzes", data.get("user_quizzes", []))
+            user_quizzes = [Quiz.from_dict(q) for q in loaded_quizzes]
+
+            self.quizzes.extend(user_quizzes)
+            self.high_score = data.get("high_score", 0)
+            self.history = data.get("history", [])
+
+        except (json.JSONDecodeError, OSError, KeyError) as e:
+            print(f"저장된 데이터를 불러오는 중 문제가 발생했습니다: {e}")
+            self.quizzes = list(self.default_quizzes)
+            self.high_score = 0
+            self.history = []
 
     def backup_state_file(self):
         """state.json을 별도의 'backups' 폴더에 백업하고 최근 10개만 유지합니다."""
@@ -308,6 +343,7 @@ class QuizGame:
             "quizzes": [q.to_dict() for q in user_quizzes],
             "history": self.history
         }
+
         try:
             self.backup_state_file()
             with open(self.file_name, "w", encoding="utf-8") as f:
