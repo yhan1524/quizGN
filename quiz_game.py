@@ -6,11 +6,11 @@ import random
 import shutil
 from datetime import datetime
 
-# Quiz 클래스는 별도의 파일(quiz.py)에 정의되어 있다고 가정합니다.
+
 try:
     from quiz import Quiz
 except ImportError:
-    # 테스트용 더미 클래스 (실제 실행 시 quiz.py가 필요합니다)
+
     class Quiz:
         def __init__(self, id, question, choices, answer, hint="", explanation="", points=10):
             self.id = id
@@ -126,6 +126,28 @@ class QuizGame:
 
         return question, choices, answer, hint, explanation, points
 
+    def input_answer(self, quiz):
+        while True:
+            ans = input("정답(1-4) 또는 h(힌트): ").strip().lower()
+
+            if ans == "":
+                print("빈 입력입니다. 1~4 사이의 숫자를 입력해주세요.")
+                continue
+
+            if ans == "h":
+                if quiz.hint:
+                    print(f"힌트: {quiz.hint}")
+                else:
+                    print("힌트가 없습니다.")
+                continue
+
+            if ans.isdigit():
+                num = int(ans)
+                if 1 <= num <= 4:
+                    return num
+
+            print("1~4 사이의 숫자만 입력해주세요.")
+
     def add_quiz(self, question, choices, answer, hint="", explanation="", points=10):
         if not question:
             print("문제는 비어 있을 수 없습니다.")
@@ -176,37 +198,55 @@ class QuizGame:
         for idx, quiz in enumerate(selected, 1):
             print(f"\n[{idx}번 문제]")
             quiz.display()
-            ans = input("정답(1-4) 또는 h(힌트): ").strip().lower()
-            if ans == 'h' and quiz.hint:
-                print(f"힌트: {quiz.hint}")
-                ans = input("정답(1-4): ").strip()
-            
-            if ans.isdigit() and quiz.check_answer(int(ans)):
+
+            user_answer = self.input_answer(quiz)
+
+            if quiz.check_answer(user_answer):
                 print("정답입니다!")
                 self.score += quiz.points
             else:
                 print(f"오답입니다. 정답은 {quiz.answer}번입니다.")
 
-        print(f"\n최종 점수: {self.score}")
-        self.update_high_score()
-        self.history.append({
-            "played_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "score": self.score
-        })
-        self.save_state()
+            print(f"\n최종 점수: {self.score}")
+            self.update_high_score()
+            self.history.append({
+                "played_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "score": self.score
+            })
+            self.save_state()
 
     def delete_quiz(self):
-        self.show_quizzes()
-        idx_in = input("삭제할 퀴즈 번호: ").strip()
-        if idx_in.isdigit() and 1 <= int(idx_in) <= len(self.quizzes):
+        if not self.quizzes:
+            print("삭제할 퀴즈가 없습니다.")
+            return
+
+        while True:
+            self.show_quizzes()
+            idx_in = input("삭제할 퀴즈 번호를 입력하세요 (0: 돌아가기): ").strip()
+
+            if idx_in == "0":
+                print("삭제를 취소하고 돌아갑니다.")
+                return
+
+            if not idx_in.isdigit():
+                print("숫자를 입력해주세요.")
+                continue
+
             idx = int(idx_in) - 1
+
+            if not (0 <= idx < len(self.quizzes)):
+                print("올바른 번호를 입력해주세요.")
+                continue
+
             if self.is_default_quiz(self.quizzes[idx]):
                 print("기본 문제는 삭제할 수 없습니다.")
-            else:
-                removed = self.quizzes.pop(idx)
-                print(f"'{removed.question}' 삭제 완료.")
-                self.save_state()
+                continue
 
+            removed = self.quizzes.pop(idx)
+            print(f"'{removed.question}' 삭제 완료.")
+            self.save_state()
+            return
+        
     def show_history(self):
         if not self.history:
             print("기록이 없습니다.")

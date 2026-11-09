@@ -273,21 +273,12 @@ quizGN/
 
 이 프로젝트는 GitHub에 업로드되어 있으며, 브랜치 작업과 병합을 포함한 작업 기록이 있습니다.
 
-### 작업 기록
-- 의미 있는 커밋 10개 이상 수행
-- 브랜치 생성 후 작업 진행
-- `checkout` 사용
-- `merge`로 메인 브랜치에 병합
-- `clone`, `pull`을 사용해 원격 저장소와 동기화
-
-### 실제 업로드 기록
-
-#### checkout
+### checkout
 다른 브랜치로 바꾸거나 예전 커밋 상태로 돌아갈 때 쓰는 명령어 입니다.
 ```bash
 git checkout (브랜치명)
 ```
-#### merge
+### merge
 다른 브랜치의 변경 내용을 현재 브랜치에 합치는 것입니다.
 ```bash
 git merge
@@ -298,7 +289,7 @@ git merge
 Already up to date.
 ```
 
-#### 
+### 
 ```bash
 git checkout -b feature   # 새 브랜치 생성 후 이동
 # 코드 수정
@@ -310,7 +301,7 @@ git merge feature         # feature 내용을 main에 합침
 ```
 ![merge](images/merge.png)
 
-#### clone
+### clone
 
 원격저장소의 내용을 새로운 폴더에 그대로 복사합니다.
 
@@ -319,7 +310,7 @@ git clone https://github.com/yhan1524/quizGN.git
 ```
 ![clone](images/clone.png)
 
-#### pull
+### pull
 
 원격저장소에 있는 프로젝트의 변경사항을 그대로 로컬저장소에 옮겨와 자동으로 병합합니다
 
