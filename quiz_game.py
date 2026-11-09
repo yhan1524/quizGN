@@ -90,7 +90,7 @@ class QuizGame:
                     )
                 )
             return quizzes
-        except (json.JSONDecodeError, OSError, KeyError):
+        except (json.JSONDecodeError, OSError, KeyError, TypeError, ValueError):
             return []
 
     def is_default_quiz(self, quiz):
@@ -151,10 +151,10 @@ class QuizGame:
             points_input = input("점수를 입력하세요(기본값 10): ").strip()
             if not points_input:
                 points = 10
-            elif points_input.isdigit():
+            elif points_input.isdigit() and int(points_input) >= 1:
                 points = int(points_input)
             else:
-                print("점수는 숫자로 입력해야 합니다.")
+                print("점수는 1 이상의 숫자로 입력해야 합니다.")
                 continue
 
             return question, choices, int(answer), hint, explanation, points
@@ -306,7 +306,7 @@ class QuizGame:
             self.high_score = data.get("high_score", 0)
             self.history = data.get("history", [])
 
-        except (json.JSONDecodeError, OSError, KeyError) as e:
+        except (json.JSONDecodeError, OSError, KeyError, ValueError, TypeError) as e:
             print(f"저장된 데이터를 불러오는 중 문제가 발생했습니다: {e}")
             self.quizzes = list(self.default_quizzes)
             self.high_score = 0
