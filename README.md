@@ -276,7 +276,7 @@ quizGN/
 - `test: 테스트 코드 추가`
 
 ### 예시
-![commit](images/commit.png)
+![commit](images/commit.png)q
 
 ---
 
@@ -411,38 +411,43 @@ VScode에서는 좌측 Source Control에서도 확인할 수 있습니다.<p>
 
 ## 18. 프로그램 실행 결과
 
-- main.py 실행
-![main](images/main.png)
+아래는 프로그램의 주요 실행 화면입니다.
 
-- 퀴즈 추가
+### 18-1. main.py 실행
+<img src="images/main.png" alt="main" width="500">
 
-![add_quiz](images/addqz.png)
+### 18-2. 퀴즈 추가
+<img src="images/addqz.png" alt="퀴즈 추가" width="500">
 
-- 퀴즈 목록 보기
+### 18-3. 퀴즈 목록 보기
+<img src="images/n2.png" alt="퀴즈 목록 보기" width="500">
 
-![목록 보기](images/n2.png)
+### 18-4. 퀴즈 풀기
+문제를 지정한 뒤 푸는 화면입니다.
 
-- 퀴즈 풀기
+<img src="images/num.png" alt="문제 지정" width="500">
 
-![지정](images/num.png)
-![풀기](images/n3.png)
+<img src="images/n3.png" alt="퀴즈 풀기" width="500">
 
-- 퀴즈 삭제
+### 18-5. 퀴즈 삭제
+기본 문제를 삭제하는 화면입니다.
 
-![기본문제 삭제](images/nodel.png)
-![삭제](images/del.png)
+<img src="images/nodel.png" alt="기본 문제 삭제" width="500">
 
-- 점수 기록 보기
-![기록없음](images/nonscore.png)
-![기록](images/score.png)
+<img src="images/del.png" alt="퀴즈 삭제" width="500">
 
-- 저장
+### 18-6. 점수 기록 보기
+기록이 없을 때와 기록이 있을 때의 화면입니다.
 
-![저장](images/save.png)
+<img src="images/nonscore.png" alt="점수 기록 없음" width="500">
 
-- 종료
+<img src="images/score.png" alt="점수 기록" width="500">
 
-![종료](images/ex.png)
+### 18-7. 저장
+<img src="images/save.png" alt="저장" width="500">
+
+### 18-8. 종료
+<img src="images/ex.png" alt="종료" width="500">
 
 
 ---
