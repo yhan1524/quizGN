@@ -276,9 +276,7 @@ quizGN/
 - `test: 테스트 코드 추가`
 
 ### 예시
-- `feat: 사용자 문제 추가 기능 구현`
-- `fix: 중복 문제 출제 오류 수정`
-- `docs: README에 저장 순서 설명 추가`
+![commit](images/commit.png)
 
 ---
 
