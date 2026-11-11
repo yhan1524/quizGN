@@ -276,7 +276,7 @@ quizGN/
 - `test: 테스트 코드 추가`
 
 ### 예시
-![commit](images/commit.png)q
+![commit](images/commit.png)
 
 ---
 
@@ -286,7 +286,7 @@ quizGN/
 
 ### init
 새 Git 저장소를 시작하는 명령어, 현재 폴더를 Git으로 관리하겠다는 의미입니다<p>
-.git 폴더가 생성됩니다
+`.git` 폴더가 생성됩니다
 ```bash
 git init
 ```
