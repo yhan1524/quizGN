@@ -12,7 +12,7 @@
 기본 문제는 코드에 포함되어 있으며, 사용자가 추가한 문제와 기록은 `state.json` 파일에 저장됩니다.
 
 ### 주요 특징
-- 기본 퀴즈 11개 내장
+- 기본 퀴즈 11개 내장 (default_questions.json)
 - 사용자 문제 추가 및 삭제
 - 랜덤 출제
 - 출제할 문제 수 선택
@@ -51,6 +51,7 @@
 ```bash
 python --version
 ```
+![pyversion](images/pyversion.png)
 
 환경에 따라 다음을 사용할 수도 있습니다.
 
@@ -233,6 +234,17 @@ quizGN/
 
 이 순서를 통해 기본 문제는 코드에 유지하고, 사용자 문제와 기록은 안전하게 관리할 수 있습니다.
 
+### state 구조
+```bash
+    "high_score":            # 최고점수를 기록합니다
+    "id":                   # 기본문제(default)와 추가문제(user)를 구분하는 id입니다
+    "question"              # 문제입니다 문자열로 받아옵니다
+    "choices": []           # 선택지입니다 리스트형으로 받아옵니다
+    "answer":               # 정답번호 입니다 정수형으로 받아옵니다
+    "points": 10            # 기본점수는 10점입니다
+    "history":              # 점수기록 히스토리를 불러옵니다
+```
+
 ---
 
 ## 12. 종료 처리와 안전 저장
@@ -399,7 +411,45 @@ VScode에서는 좌측 Source Control에서도 확인할 수 있습니다.<p>
 
 ---
 
-## 18. 마무리
+## 18. 프로그램 실행 결과
+
+- main.py 실행
+![main](images/main.png)
+
+- 퀴즈 추가
+
+![add_quiz](images/addqz.png)
+
+- 퀴즈 목록 보기
+
+![목록 보기](images/n2.png)
+
+- 퀴즈 풀기
+
+![지정](images/num.png)
+![풀기](images/n3.png)
+
+- 퀴즈 삭제
+
+![기본문제 삭제](images/nodel.png)
+![삭제](images/del.png)
+
+- 점수 기록 보기
+![기록없음](images/nonscore.png)
+![기록](images/score.png)
+
+- 저장
+
+![저장](images/save.png)
+
+- 종료
+
+![종료](images/ex.png)
+
+
+---
+
+## 19. 마무리
 
 이 프로젝트는 Python의 기본 문법과 파일 저장 기능을 활용해 만든 퀴즈 게임입니다.  
 직접 문제를 추가하고 풀어보면서 학습 내용을 복습할 수 있도록 구성했습니다.

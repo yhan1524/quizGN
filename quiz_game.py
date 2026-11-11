@@ -236,7 +236,7 @@ class QuizGame:                         # 퀴즈 게임 클래스
             return
         
         count = int(count_in)
-        selected = random.sample(self.quizzes, count)
+        selected = random.sample(self.quizzes, count)       # 랜덤으로 문제 선택
         self.score = 0
 
         for idx, quiz in enumerate(selected, 1):
@@ -296,9 +296,11 @@ class QuizGame:                         # 퀴즈 게임 클래스
             print("기록이 없습니다.")
             return
         print("\n=== 점수 기록 ===")
+        print(f"최고점: {self.high_score}")
         for h in self.history:
+            
             print(f"[{h.get('played_at')}] 점수: {h.get('score')}")
-
+ 
     def load_state(self):
         self.quizzes = list(self.default_quizzes)
 
