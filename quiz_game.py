@@ -1,15 +1,15 @@
-import json
-import os
-import sys
-import signal
-import random
-import shutil
-from datetime import datetime
+import json                         # 저장/불러오기
+import os                           # 파일경로, 존재여부 확인
+import sys                          # 종료처리
+import signal                       # Ctrl+c 처리
+import random                       # 문제 랜덤 출제
+import shutil                       # 백업 파일 복사
+from datetime import datetime       # 날짜/시간 처리
 
 
 try:
     from quiz import Quiz
-except ImportError:
+except ImportError:                 # quiz.py가 없으면 Quiz 클래스를 정의
 
     class Quiz:
         def __init__(self, id, question, choices, answer, hint="", explanation="", points=10):
@@ -47,7 +47,7 @@ except ImportError:
                 points=data.get("points", 10)
             )
 
-class QuizGame:
+class QuizGame:                         # 퀴즈 게임 클래스
     def __init__(self):
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
         self.file_name = os.path.join(self.base_dir, "state.json")
@@ -64,7 +64,7 @@ class QuizGame:
         self.load_state()
         self.register_signal_handlers()
 
-    @staticmethod
+    @staticmethod                        # 기본 문제를 로드하는 메서드
     def default_questions():
         """기본 문제 파일을 로드합니다."""
         file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "default_questions.json")
@@ -90,7 +90,7 @@ class QuizGame:
                     )
                 )
             return quizzes
-        except (json.JSONDecodeError, OSError, KeyError, TypeError, ValueError):
+        except (json.JSONDecodeError, OSError, KeyError, TypeError, ValueError):        #파일형식에러, 운영체제 수준오류, 키오류, 자료형오류, 범위오류
             return []
 
     def is_default_quiz(self, quiz):
@@ -125,7 +125,11 @@ class QuizGame:
 
     def input_quiz_data(self):
         while True:
-            question = input("문제를 입력하세요: ").strip()
+            question = input("문제를 입력하세요(0: 돌아가기): ").strip()
+            if question == "0":
+                print("퀴즈 추가를 취소하고 돌아갑니다.")
+                return
+            
             if not question:
                 print("문제는 빈칸일 수 없습니다.")
                 continue
@@ -133,14 +137,20 @@ class QuizGame:
             choices = []
             for i in range(1, 5):
                 while True:
-                    choice = input(f"{i}번 선택지를 입력하세요: ").strip()
+                    choice = input(f"{i}번 선택지를 입력하세요(0: 돌아가기): ").strip()
                     if not choice:
                         print("선택지는 빈칸일 수 없습니다.")
                         continue
+                    if choice == "0":
+                        print("퀴즈 추가를 취소하고 돌아갑니다.")
+                        return
                     choices.append(choice)
                     break
 
-            answer = input("정답 번호(1~4)를 입력하세요: ").strip()
+            answer = input("정답 번호(1~4)를 입력하세요(0: 돌아가기): ").strip()
+            if answer == "0":
+                print("퀴즈 추가를 취소하고 돌아갑니다.")
+                return
             if answer not in ["1", "2", "3", "4"]:
                 print("정답은 1~4 중 하나여야 합니다.")
                 continue
@@ -161,6 +171,7 @@ class QuizGame:
 
     def input_answer(self, quiz):
         while True:
+            
             ans = input("정답(1-4) 또는 h(힌트): ").strip().lower()
 
             if ans == "":
@@ -298,7 +309,7 @@ class QuizGame:
             with open(self.file_name, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
-            # 예전 형식(user_quizzes)도 호환
+        
             loaded_quizzes = data.get("quizzes", data.get("user_quizzes", []))
             user_quizzes = [Quiz.from_dict(q) for q in loaded_quizzes]
 
@@ -368,7 +379,10 @@ class QuizGame:
         while True:
             menu = self.input_menu()
             if menu == "1":
-                self.add_quiz(*self.input_quiz_data())
+                quiz_data = self.input_quiz_data()
+                if quiz_data is None:
+                    continue
+                self.add_quiz(*quiz_data)
             elif menu == "2":
                 self.show_quizzes()
             elif menu == "3":
@@ -386,6 +400,6 @@ class QuizGame:
             else:
                 print("잘못된 선택입니다.")
 
-if __name__ == "__main__":
+if __name__ == "__main__":          # quiz_game.py를 직접 실행하면 게임을 시작
     game = QuizGame()
     game.run()

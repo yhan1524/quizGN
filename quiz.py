@@ -59,7 +59,7 @@ class Quiz:
             "points": self.points,
         }
 
-    @classmethod
+    @classmethod                    # 클래스 메서드로 from_dict 정의
     def from_dict(cls, data: Dict[str, Any]):
         if not isinstance(data, dict):
             raise ValueError("퀴즈 데이터 형식이 올바르지 않습니다.")
