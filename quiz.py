@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
-from typing import Any, Dict, List
-import uuid
-
+from dataclasses import dataclass, field # 이 모듈은 자동으로 클래스를 만들어줌 field는 객체마다 새 리스트를 만들게함
+from typing import Any, Dict, List      # 타이핑 모듈에서 이름을 가져옴 어떤타입이든 가능, 딕셔너리, 리스트
+import uuid             # 고유한 식별자(UUID)를 만들기 위한 모듈을 불러오는 코드
+                        # uuid.uuid4() 랜덤기반
 
 @dataclass
 class Quiz:
@@ -13,7 +13,7 @@ class Quiz:
     explanation: str = ""
     points: int = 10
 
-    def __post_init__(self):
+    def __post_init__(self): # from_dict 객체 유효성 검증
         if not isinstance(self.id, str) or not self.id.strip():
             self.id = str(uuid.uuid4())
 
@@ -48,7 +48,7 @@ class Quiz:
     def check_answer(self, user_answer: int) -> bool:
         return user_answer == self.answer
 
-    def to_dict(self):
+    def to_dict(self):                  # 최종적으로 값을 반환, 딕셔너리 형태로
         return {
             "id": self.id,
             "question": self.question,
@@ -59,8 +59,8 @@ class Quiz:
             "points": self.points,
         }
 
-    @classmethod                    # 클래스 메서드로 from_dict 정의
-    def from_dict(cls, data: Dict[str, Any]):
+    @classmethod                    
+    def from_dict(cls, data: Dict[str, Any]):       # 입력검증, 내부 에러 메시지로 사용자출력은 되지않음
         if not isinstance(data, dict):
             raise ValueError("퀴즈 데이터 형식이 올바르지 않습니다.")
 
@@ -87,3 +87,4 @@ class Quiz:
             explanation=str(data.get("explanation", "")),
             points=points,
         )
+    

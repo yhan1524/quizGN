@@ -140,7 +140,7 @@ quizGN/
 
 ### `Quiz` 클래스
 `Quiz` 클래스는 **퀴즈 한 문제의 데이터를 표현하는 모델**입니다.  
-문제, 정답, 힌트 같은 정보를 저장하는 역할만 담당하며, 게임 진행이나 입력 처리는 하지 않습니다.
+문제, 정답, 힌트 같은 정보를 저장하는 역할만 담당하는 곳 입니다.
 
 ### `QuizGame` 클래스
 `QuizGame` 클래스는 **퀴즈 게임의 전체 진행을 담당하는 로직 클래스**입니다.  
@@ -154,57 +154,59 @@ quizGN/
 
 이 프로젝트에서 클래스를 사용한 이유는 **추상화와 재사용성**을 높이기 위해서입니다.
 
-- `Quiz`는 문제 1개의 공통 구조를 표현하므로, 여러 문제를 같은 방식으로 다룰 수 있습니다.
-- `QuizGame`은 퀴즈 진행 흐름을 한 곳에서 관리하므로, 메뉴나 기능이 추가되어도 전체 구조를 유지하기 쉽습니다.
+### Quiz 클래스
+
+| 메서드 | 역할 | 설명 |
+|---|---|---|
+| __post_init__(self) | 객체 유효성 검증 | id, question, choices, answer, points 값이 올바른지 검사하고 정리 |
+| display(self) | 문제 출력 | 문제와 4개 선택지를 화면에 출력 |
+| check_answer(self, user_answer) | 정답 확인 | 입력한 답이 정답과 같은지 비교 |
+| to_dict(self) | 딕셔너리 변환 | 퀴즈 데이터를 JSON 저장용 딕셔너리로 변환 |
+| from_dict(cls, data) | 딕셔너리 → 객체 변환 | 저장된 데이터를 검사한 뒤 Quiz 객체로 복원 |
+
+### QuizGame 클래스
+
+| 메서드 | 역할 | 설명 |
+|---|---|---|
+| __init__(self) | 게임 초기화 | 기본 문제 로드, 상태 초기화, 저장 데이터 불러오기, 시그널 등록 |
+| default_questions() | 기본 문제 읽기 | default_questions.json에서 기본 퀴즈를 불러와 Quiz 객체로 생성 |
+| reset_state(self) | 상태 초기화 | 퀴즈 목록, 최고점, 기록, 현재 점수 초기화 |
+| _user_quizzes(self) | 사용자 퀴즈 추출 | 기본 문제가 아닌 퀴즈만 골라 반환 |
+| _next_user_quiz_id(self) | 새 퀴즈 ID 생성 | 사용자 퀴즈용 user-번호 형식 ID 생성 |
+| is_default_quiz(self, quiz) | 기본 문제 판별 | 퀴즈 ID가 default-로 시작하는지 확인 |
+| normalize_text(self, text) | 문자열 정규화 | 공백 제거 및 소문자 변환으로 비교용 문자열 생성 |
+| is_duplicate_question(self, question) | 중복 문제 검사 | 같은 질문이 이미 있는지 확인 |
+| input_menu(self) | 메뉴 입력 | 메뉴를 출력하고 사용자의 선택을 입력받음 |
+| input_quiz_data(self) | 문제 입력 수집 | 문제, 선택지, 정답, 힌트, 해설, 점수를 입력받음 |
+| input_answer(self, quiz) | 정답 입력 처리 | 사용자의 답을 입력받고, h 입력 시 힌트 출력 |
+| add_quiz(self, question, choices, answer, hint="", explanation="", points=10) | 퀴즈 추가 | 중복 검사 후 새 퀴즈 생성, 목록에 추가, 저장 |
+| show_quizzes(self) | 퀴즈 목록 출력 | 저장된 모든 퀴즈를 번호와 함께 출력 |
+| show_history(self) | 점수 기록 출력 | 최고점과 이전 플레이 기록 출력 |
+| play_quiz(self) | 퀴즈 진행 | 문제 수 선택 → 랜덤 출제 → 정답 확인 → 점수 계산 → 기록 저장 |
+| delete_quiz(self) | 퀴즈 삭제 | 선택한 퀴즈를 삭제하고, 기본 문제는 삭제하지 않음 |
+| load_state(self) | 저장 상태 불러오기 | state.json에서 퀴즈, 최고점, 기록을 읽어 복원 |
+| backup_state_file(self) | 백업 생성 | 저장 파일을 backups/ 폴더에 복사하고 오래된 백업 삭제 |
+| save_state(self) | 상태 저장 | 사용자 퀴즈, 최고점, 기록을 JSON 파일로 저장 |
+| update_high_score(self) | 최고점 갱신 | 현재 점수가 최고점보다 높으면 갱신 |
+| handle_exit_signal(self, signum, frame) | 강제 종료 처리 | 저장 후 프로그램 종료 |
+| register_signal_handlers(self) | 시그널 등록 | SIGINT 처리 함수를 등록 |
+| run(self) | 메인 실행 루프 | 메뉴를 반복 실행하며 게임 전체 흐름 관리 |
 
 즉, 클래스를 사용하면 기능이 늘어나도 코드 구조가 흐트러지지 않고, 같은 형태의 데이터를 반복해서 처리하기 편해집니다.
 
-| 클래스 | 주요 메서드 | 책임 |
-|---|---|---|
-| `main` | `main()` | `QuizGame` 인스턴스를 생성하고 게임 실행을 시작함 |
-| `Quiz` | `__post_init__()` | 퀴즈 데이터의 유효성 검사 및 정리 수행 |
-| `Quiz` | `display()` | 문제와 선택지를 화면에 출력함 |
-| `Quiz` | `check_answer(user_answer)` | 사용자의 답이 정답인지 판별함 |
-| `Quiz` | `to_dict()` | 객체를 JSON 저장용 딕셔너리로 변환함 |
-| `Quiz` | `from_dict(data)` | 딕셔너리 데이터를 기반으로 `Quiz` 객체를 복원함 |
-| `QuizGame` | `__init__()` | 게임 상태 초기화, 기본 문제 로드, 저장 상태 불러오기, 시그널 등록 |
-| `QuizGame` | `default_questions()` | `default_questions.json`에서 기본 문제를 읽어옴 |
-| `QuizGame` | `is_default_quiz(quiz)` | 해당 퀴즈가 기본 문제인지 확인함 |
-| `QuizGame` | `normalize_text(text)` | 문제 비교를 위한 문자열 정규화 수행 |
-| `QuizGame` | `is_duplicate_question(question)` | 중복된 문제가 있는지 검사함 |
-| `QuizGame` | `input_menu()` | 메뉴를 출력하고 사용자 선택을 입력받음 |
-| `QuizGame` | `input_quiz_data()` | 새 퀴즈 등록에 필요한 데이터를 입력받음 |
-| `QuizGame` | `input_answer(quiz)` | 퀴즈 풀이 중 정답을 입력받습니다. `h` 입력 시 힌트를 출력합니다. |
-| `QuizGame` | `add_quiz(...)` | 새 퀴즈를 추가하고 저장함 |
-| `QuizGame` | `show_quizzes()` | 저장된 퀴즈 목록을 출력함 |
-| `QuizGame` | `play_quiz()` | 퀴즈를 출제하고 점수를 계산함 |
-| `QuizGame` | `delete_quiz()` | 선택한 퀴즈를 삭제함 |
-| `QuizGame` | `show_history()` | 게임 점수 기록을 출력함 |
-| `QuizGame` | `load_state()` | 저장된 상태를 읽어와 현재 게임 상태를 복원함 |
-| `QuizGame` | `backup_state_file()` | `state.json`을 백업하고 최근 10개의 백업만 유지함 |
-| `QuizGame` | `save_state()` | 현재 퀴즈, 최고 점수, 기록을 파일로 저장함 |
-| `QuizGame` | `update_high_score()` | 최고 점수를 갱신함 |
-| `QuizGame` | `handle_exit_signal(signum, frame)` | 종료 신호를 처리하고 저장 후 종료함 |
-| `QuizGame` | `register_signal_handlers()` | 종료 신호 핸들러를 등록함 |
-| `QuizGame` | `run()` | 메뉴 루프를 실행하며 전체 게임 흐름을 관리함 |
-
 ---
 
-## 9. 입력 검증 / 게임 진행 / 데이터 입출력 분리
+## 9. 기능별 정리
 
-이 프로젝트는 기능을 다음 3개 영역으로 나누어 설계했습니다.
-
-- **input 영역**  
-  사용자의 입력을 받는 부분입니다.  
-  메뉴 선택, 숫자 입력, yes/no 확인처럼 잘못된 입력을 걸러내는 역할을 합니다.
-
-- **logic 영역**  
-  퀴즈의 실제 규칙을 처리하는 부분입니다.  
-  문제 출제, 정답 비교, 점수 계산, 중복 문제 검사 같은 게임 동작을 담당합니다.
-
-- **io 영역**  
-  파일과 데이터를 다루는 부분입니다.  
-  `state.json` 저장/불러오기, 백업 생성, JSON 처리 같은 작업을 담당합니다.
+| 기능 그룹 | 메서드 |
+|---|---|
+| 객체 검증/변환 | __post_init__, to_dict, from_dict |
+| 문제 출력/판정 | display, check_answer |
+| 입력 처리 | input_menu, input_quiz_data, input_answer |
+| 퀴즈 관리 | add_quiz, show_quizzes, delete_quiz |
+| 게임 진행 | play_quiz, update_high_score, show_history |
+| 저장/복구 | load_state, save_state, backup_state_file |
+| 실행 제어 | run, handle_exit_signal, register_signal_handlers |
 
 이렇게 나누면 입력 방식이 바뀌어도 게임 규칙에는 영향이 적고, 저장 방식이 바뀌어도 퀴즈 로직을 크게 수정하지 않아도 됩니다.
 
@@ -391,42 +393,32 @@ VScode에서는 좌측 Source Control에서도 확인할 수 있습니다.<p>
 
 ## 16. 1000개 이상 데이터 확장성 분석
 
-현재 구조는 퀴즈 데이터를 메모리에서 불러와 처리하므로, 데이터가 1000개 이상으로 늘어나면 비용이 커질 수 있습니다.
+# 1000개 이상 데이터 확장성 분석
 
-- **메모리 사용량 증가**: 퀴즈 목록과 기록을 한 번에 메모리에 올리면 사용량이 늘어납니다.
-- **검색 속도 저하**: 중복 검사나 특정 문제 탐색을 순차 검색으로 하면 데이터가 많을수록 느려질 수 있습니다.
-- **저장/불러오기 시간 증가**: `state.json` 파일이 커질수록 읽기와 쓰기 시간이 길어질 수 있습니다.
-
-### 개선 방향
-- `set` 또는 `dict` 기반 중복 검사로 검색 속도를 개선합니다.
-- 데이터가 커지면 필요한 데이터만 읽는 방식으로 바꿀 수 있습니다.
-- 사용자 문제와 기록을 분리 저장하는 방법도 고려할 수 있습니다.
-
+| 문제점 | 원인 | 영향 | 개선 방향 |
+|---|---|---|---|
+| 시작 시 로딩 비용 증가 | `load_state()`에서 모든 퀴즈를 한 번에 메모리로 불러옴 | 데이터가 많을수록 시작 시간이 길어짐 | 필요한 데이터만 읽는 지연 로딩, 또는 DB 사용 |
+| 중복 검사 비용 증가 | `is_duplicate_question()`이 전체 퀴즈를 선형 탐색함 | 문제를 추가할수록 처리 시간이 늘어남 | 질문 정규화 후 `set`/`dict` 인덱스 사용 |
+| 목록 출력이 비효율적임 | `show_quizzes()`가 모든 퀴즈를 한 번에 출력함 | 1000개 이상이면 화면이 길어지고 찾기 어려움 | 페이지 단위 출력, 검색 기능 추가 |
+| 저장 시간이 길어짐 | `save_state()`가 전체 사용자 퀴즈를 매번 JSON으로 다시 저장함 | 저장 시 I/O 비용이 커짐 | 변경된 데이터만 저장하거나 저장 주기 조절 |
+| 백업 비용 증가 | 저장할 때마다 `backup_state_file()`에서 파일 복사 수행 | 파일이 커질수록 백업 시간이 늘어남 | 백업 횟수 제한, 일정 주기 백업, 압축 백업 |
+| 삭제/검색 성능 저하 | 리스트 기반 구조라 원하는 항목을 찾을 때 순회가 필요함 | 데이터가 많을수록 반응 속도가 느려짐 | ID 기반 조회 구조, 인덱스 구조 도입 |
+| 메모리 사용량 증가 | 모든 퀴즈 객체를 메모리에 유지함 | 데이터가 커질수록 메모리 부담이 커짐 | 필요 시 로드, 파일/DB 분리 저장 |
 ---
 
 ## 17. 요구 변경 시 수정 대상
 
 기능 요구가 바뀌면 아래 모듈과 메서드를 우선적으로 수정해야 합니다.
 
-- **점수 계산 변경**
-  - 점수 부여 방식, 힌트 사용 시 감점 규칙, 정답 판정 로직
-  - 관련 메서드: `QuizGame`의 점수 계산/정답 처리 부분
-
-- **퀴즈 모델 변경**
-  - 문제 구조에 새 필드 추가, 예: 난이도, 카테고리, 설명
-  - 관련 클래스: `Quiz`
-
-- **데이터 저장 방식 변경**
-  - `state.json` 저장 구조, 로드 방식, 백업 방식 수정
-  - 관련 메서드: 저장/불러오기/백업 처리 함수
-
-- **문제 출제 방식 변경**
-  - 랜덤 출제, 문제 수 선택, 중복 방지 규칙 수정
-  - 관련 메서드: 문제 선택 및 출제 관련 로직
-
-- **입력 방식 변경**
-  - 메뉴 입력, 숫자 검증, yes/no 확인 방식 수정
-  - 관련 함수: 입력 검증 함수
+| 변경 요구 | 주로 수정할 기능 그룹 | 주요 수정 메서드 | 영향 정도 |
+|---|---|---|---|
+| 입력 방식 변경 | 입력 처리 | input_menu, input_quiz_data, input_answer | 낮음~중간 |
+| 저장 방식 변경 | 저장/복구, 객체 검증/변환 | load_state, save_state, backup_state_file, to_dict, from_dict | 중간 |
+| 게임 규칙 변경 | 게임 진행, 문제 출력/판정 | play_quiz, check_answer, update_high_score, display | 중간~높음 |
+| 퀴즈 데이터 구조 변경 | 객체 검증/변환, 저장/복구, 퀴즈 관리 | __post_init__, to_dict, from_dict, add_quiz, show_quizzes, delete_quiz | 높음 |
+| 메뉴 구성 변경 | 실행 제어, 입력 처리 | run, input_menu | 낮음 |
+| 기본 문제 파일 형식 변경 | 퀴즈 로드, 객체 변환 | default_questions, from_dict | 중간 |
+| 백업 정책 변경 | 저장/복구 | backup_state_file | 낮음 |
 
 이처럼 수정 위치를 나누어 두면, 요구가 바뀌더라도 어떤 부분을 고쳐야 하는지 빠르게 파악할 수 있습니다.
 
