@@ -166,31 +166,31 @@ quizGN/
 
 ### QuizGame 클래스
 
-| 메서드 | 역할 | 설명 |
-|---|---|---|
-| __init__(self) | 게임 초기화 | 기본 문제 로드, 상태 초기화, 저장 데이터 불러오기, 시그널 등록 |
-| default_questions() | 기본 문제 읽기 | default_questions.json에서 기본 퀴즈를 불러와 Quiz 객체로 생성 |
-| reset_state(self) | 상태 초기화 | 퀴즈 목록, 최고점, 기록, 현재 점수 초기화 |
-| _user_quizzes(self) | 사용자 퀴즈 추출 | 기본 문제가 아닌 퀴즈만 골라 반환 |
-| _next_user_quiz_id(self) | 새 퀴즈 ID 생성 | 사용자 퀴즈용 user-번호 형식 ID 생성 |
-| is_default_quiz(self, quiz) | 기본 문제 판별 | 퀴즈 ID가 default-로 시작하는지 확인 |
-| normalize_text(self, text) | 문자열 정규화 | 공백 제거 및 소문자 변환으로 비교용 문자열 생성 |
-| is_duplicate_question(self, question) | 중복 문제 검사 | 같은 질문이 이미 있는지 확인 |
-| input_menu(self) | 메뉴 입력 | 메뉴를 출력하고 사용자의 선택을 입력받음 |
-| input_quiz_data(self) | 문제 입력 수집 | 문제, 선택지, 정답, 힌트, 해설, 점수를 입력받음 |
-| input_answer(self, quiz) | 정답 입력 처리 | 사용자의 답을 입력받고, h 입력 시 힌트 출력 |
-| add_quiz(self, question, choices, answer, hint="", explanation="", points=10) | 퀴즈 추가 | 중복 검사 후 새 퀴즈 생성, 목록에 추가, 저장 |
-| show_quizzes(self) | 퀴즈 목록 출력 | 저장된 모든 퀴즈를 번호와 함께 출력 |
-| show_history(self) | 점수 기록 출력 | 최고점과 이전 플레이 기록 출력 |
-| play_quiz(self) | 퀴즈 진행 | 문제 수 선택 → 랜덤 출제 → 정답 확인 → 점수 계산 → 기록 저장 |
-| delete_quiz(self) | 퀴즈 삭제 | 선택한 퀴즈를 삭제하고, 기본 문제는 삭제하지 않음 |
-| load_state(self) | 저장 상태 불러오기 | state.json에서 퀴즈, 최고점, 기록을 읽어 복원 |
-| backup_state_file(self) | 백업 생성 | 저장 파일을 backups/ 폴더에 복사하고 오래된 백업 삭제 |
-| save_state(self) | 상태 저장 | 사용자 퀴즈, 최고점, 기록을 JSON 파일로 저장 |
-| update_high_score(self) | 최고점 갱신 | 현재 점수가 최고점보다 높으면 갱신 |
-| handle_exit_signal(self, signum, frame) | 강제 종료 처리 | 저장 후 프로그램 종료 |
-| register_signal_handlers(self) | 시그널 등록 | SIGINT 처리 함수를 등록 |
-| run(self) | 메인 실행 루프 | 메뉴를 반복 실행하며 게임 전체 흐름 관리 |
+| 메서드 | 역할 설명 |
+|---|---|
+| `__init__` | 게임 객체를 초기화하고 기본 경로, 파일 경로, 기본 퀴즈, 초기 상태, 종료 신호 처리 등을 설정한다. |
+| `default_questions` | `default_questions.json` 파일에서 기본 문제를 읽어와 `Quiz` 객체 목록으로 변환한다. |
+| `reset_state` | 퀴즈 목록, 최고점, 기록, 현재 점수를 초기 상태로 되돌린다. |
+| `_user_quizzes` | 전체 퀴즈 중 기본 문제를 제외한 사용자 추가 퀴즈만 반환한다. |
+| `_next_user_quiz_id` | 새로 추가할 사용자 퀴즈의 ID를 생성한다. |
+| `is_default_quiz` | 해당 퀴즈가 기본 문제인지 판별한다. |
+| `normalize_text` | 문자열의 공백을 제거하고 소문자로 변환해 비교용으로 정규화한다. |
+| `is_duplicate_question` | 입력한 문제가 이미 존재하는지 중복 여부를 검사한다. |
+| `input_menu` | 메뉴를 출력하고 사용자의 선택을 입력받는다. |
+| `input_quiz_data` | 새 퀴즈의 문제, 선택지, 정답, 힌트, 해설, 점수를 입력받고 검증한다. |
+| `input_answer` | 퀴즈 풀이 중 정답 입력 또는 힌트 요청을 처리한다. |
+| `add_quiz` | 중복 검사를 거쳐 새 퀴즈를 추가하고 저장한다. |
+| `show_quizzes` | 저장된 모든 퀴즈를 출력한다. 기본 문제와 추가 문제를 구분해서 보여준다. |
+| `show_history` | 점수 기록과 최고점을 출력한다. |
+| `play_quiz` | 퀴즈를 랜덤으로 선택해 출제하고, 정답 여부에 따라 점수를 계산한다. |
+| `delete_quiz` | 사용자가 선택한 퀴즈를 삭제한다. 기본 문제는 삭제하지 못하게 막는다. |
+| `load_state` | `state.json` 파일에서 저장된 퀴즈, 최고점, 기록을 불러온다. |
+| `backup_state_file` | 저장 파일을 백업 폴더에 복사하고 오래된 백업 파일을 정리한다. |
+| `save_state` | 사용자 퀴즈, 최고점, 기록을 JSON 파일로 저장한다. |
+| `update_high_score` | 현재 점수가 최고점보다 높으면 최고점을 갱신한다. |
+| `handle_exit_signal` | 종료 신호를 받으면 저장 후 프로그램을 종료한다. |
+| `register_signal_handlers` | 종료 신호 처리 함수를 등록한다. |
+| `run` | 메뉴를 반복 실행하면서 퀴즈 추가, 조회, 풀이, 삭제, 저장, 종료를 관리한다. |
 
 즉, 클래스를 사용하면 기능이 늘어나도 코드 구조가 흐트러지지 않고, 같은 형태의 데이터를 반복해서 처리하기 편해집니다.
 
@@ -198,15 +198,20 @@ quizGN/
 
 ## 9. 기능별 정리
 
-| 기능 그룹 | 메서드 |
+| 기능 | 메서드 |
 |---|---|
-| 객체 검증/변환 | __post_init__, to_dict, from_dict |
-| 문제 출력/판정 | display, check_answer |
-| 입력 처리 | input_menu, input_quiz_data, input_answer |
-| 퀴즈 관리 | add_quiz, show_quizzes, delete_quiz |
-| 게임 진행 | play_quiz, update_high_score, show_history |
-| 저장/복구 | load_state, save_state, backup_state_file |
-| 실행 제어 | run, handle_exit_signal, register_signal_handlers |
+| 객체 검증 및 정리 | `__post_init__` |
+| 화면 출력 | `display` |
+| 정답 확인 | `check_answer` |
+| 저장용 변환 | `to_dict` |
+| 복원용 변환 | `from_dict` |
+| 초기화 / 상태 설정 | `__init__`, `reset_state`, `default_questions` |
+| 문자열 / 중복 검사 | `normalize_text`, `is_default_quiz`, `is_duplicate_question`, `_user_quizzes`, `_next_user_quiz_id` |
+| 입력 처리 | `input_menu`, `input_quiz_data`, `input_answer` |
+| 퀴즈 관리 | `add_quiz`, `show_quizzes`, `delete_quiz` |
+| 게임 진행 / 점수 | `play_quiz`, `update_high_score`, `show_history` |
+| 저장 / 복구 / 백업 | `load_state`, `backup_state_file`, `save_state` |
+| 종료 처리 / 실행 흐름 | `handle_exit_signal`, `register_signal_handlers`, `run` |
 
 이렇게 나누면 입력 방식이 바뀌어도 게임 규칙에는 영향이 적고, 저장 방식이 바뀌어도 퀴즈 로직을 크게 수정하지 않아도 됩니다.
 

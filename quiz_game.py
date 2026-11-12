@@ -15,6 +15,7 @@ class QuizGame:
 
         self.default_quizzes = self.default_questions()                     # 기본 문제를 불러와 저장
         self.reset_state()                                                  # 실제로 사용하는 퀴즈 목록
+        self.hint_penalty = 2
 
         self.load_state()                                                   # 저장된 데이터가 있으면 불러옴
         self.register_signal_handlers()                                     # 갑작스런 종료시 저장 후 종료
@@ -139,15 +140,21 @@ class QuizGame:
         return question, choices, answer, hint, explanation, points
 
     def input_answer(self, quiz):
+        used_hint = False
+
         while True:
             ans = input("정답(1-4) 또는 h(힌트): ").strip().lower()
 
             if ans == "h":
-                print(f"힌트: {quiz.hint}" if quiz.hint else "힌트가 없습니다.")
+                if quiz.hint:   # 힌트가 있을 때만 차감 대상으로 처리
+                    print(f"힌트: {quiz.hint}")
+                    used_hint = True
+                else:
+                    print("이 문제는 힌트가 없습니다.")
                 continue
 
             if ans.isdigit() and 1 <= int(ans) <= 4:
-                return int(ans)
+                return int(ans), used_hint
 
             print("1~4 사이의 숫자만 입력해주세요.")
 
@@ -210,18 +217,37 @@ class QuizGame:
         self.score = 0
         selected = random.sample(self.quizzes, int(count_in))
 
+        correct_quizzes = []
+        incorrect_quizzes = []
+        hint_used_count = 0
+
         for idx, quiz in enumerate(selected, 1):
             print(f"\n[{idx}번 문제]")
             quiz.display()
 
-            user_answer = self.input_answer(quiz)
+            user_answer, used_hint = self.input_answer(quiz)
+
             if quiz.check_answer(user_answer):
+                earned_points = quiz.points
+                if used_hint:
+                    penalty = min(self.hint_penalty, earned_points)
+                    earned_points -= penalty
+                    hint_used_count += 1
+                    print(f"힌트 사용으로 {penalty}점 차감됩니다.")
+
                 print("정답입니다!")
-                self.score += quiz.points
+                self.score += earned_points
+                correct_quizzes.append(quiz)
             else:
                 print(f"오답입니다. 정답은 {quiz.answer}번입니다.")
+                incorrect_quizzes.append(quiz)
 
+        print("\n=== 결과 요약 ===")
         print(f"\n최종 점수: {self.score}")
+        print(f"정답: {len(correct_quizzes)}문제")
+        print(f"오답: {len(incorrect_quizzes)}문제")
+        print(f"힌트사용: {hint_used_count} ")
+
         self.update_high_score()
         self.history.append({
             "played_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
