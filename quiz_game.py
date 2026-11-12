@@ -388,8 +388,3 @@ class QuizGame:
                 break
             else:
                 print("잘못된 선택입니다.")
-
-
-if __name__ == "__main__":
-    game = QuizGame()
-    game.run()
