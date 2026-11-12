@@ -447,26 +447,28 @@ VScode에서는 좌측 Source Control에서도 확인할 수 있습니다.<p>
 
 <img src="images/num.png" alt="문제 지정" width="500">
 
-<img src="images/n3.png" alt="퀴즈 풀기" width="500">
+### 18-5. 퀴즈 결과
 
-### 18-5. 퀴즈 삭제
+<img src="images/n3.png" alt="퀴즈 결과" width="500">
+
+### 18-6. 퀴즈 삭제
 기본 문제를 삭제하는 화면입니다.
 
 <img src="images/nodel.png" alt="기본 문제 삭제" width="500">
 
 <img src="images/del.png" alt="퀴즈 삭제" width="500">
 
-### 18-6. 점수 기록 보기
+### 18-7. 점수 기록 보기
 기록이 없을 때와 기록이 있을 때의 화면입니다.
 
 <img src="images/nonscore.png" alt="점수 기록 없음" width="500">
 
 <img src="images/score.png" alt="점수 기록" width="500">
 
-### 18-7. 저장
+### 18-8. 저장
 <img src="images/save.png" alt="저장" width="500">
 
-### 18-8. 종료
+### 18-9. 종료
 <img src="images/ex.png" alt="종료" width="500">
 
 
