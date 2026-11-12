@@ -85,39 +85,56 @@ class QuizGame:
         return input("메뉴를 선택하세요: ").strip()
 
     def input_quiz_data(self):
-        question = input("문제를 입력하세요(0: 돌아가기): ").strip()
-        if question == "0":
-            print("퀴즈 추가를 취소하고 돌아갑니다.")
-            return None
+        while True:
+            question = input("문제를 입력하세요(0: 돌아가기): ").strip()
+            if question == "0":
+                print("퀴즈 추가를 취소하고 돌아갑니다.")
+                return None
+            if not question:
+                print("문제는 비워둘 수 없습니다.")
+                continue
+            break
 
         choices = []
         for i in range(1, 5):
-            choice = input(f"{i}번 선택지를 입력하세요(0: 돌아가기): ").strip()
-            if choice == "0":
+            while True:
+                choice = input(f"{i}번 선택지를 입력하세요(0: 돌아가기): ").strip()
+                if choice == "0":
+                    print("퀴즈 추가를 취소하고 돌아갑니다.")
+                    return None
+                if not choice:
+                    print("선택지는 비워둘 수 없습니다.")
+                    continue
+                choices.append(choice)
+                break
+
+        while True:
+            answer_input = input("정답 번호(1~4)를 입력하세요(0: 돌아가기): ").strip()
+            if answer_input == "0":
                 print("퀴즈 추가를 취소하고 돌아갑니다.")
                 return None
-            choices.append(choice)
-
-        answer_input = input("정답 번호(1~4)를 입력하세요(0: 돌아가기): ").strip()
-        if answer_input == "0":
-            print("퀴즈 추가를 취소하고 돌아갑니다.")
-            return None
-        if not answer_input.isdigit() or not (1 <= int(answer_input) <= 4):
-            print("정답은 1~4 사이의 숫자여야 합니다.")
-            return None
-        answer = int(answer_input)
+            if not answer_input.isdigit() or not (1 <= int(answer_input) <= 4):
+                print("정답은 1~4 사이의 숫자여야 합니다.")
+                continue
+            answer = int(answer_input)
+            break
 
         hint = input("힌트를 입력하세요(선택): ").strip()
         explanation = input("해설을 입력하세요(선택): ").strip()
 
-        points_input = input("점수를 입력하세요(기본값 10): ").strip()
-        if points_input:
+        while True:
+            points_input = input("점수를 입력하세요(기본값 10): ").strip()
+            if not points_input:
+                points = 10
+                break
             if not points_input.isdigit():
                 print("점수는 숫자만 입력하세요.")
-                return None
+                continue
             points = int(points_input)
-        else:
-            points = 10
+            if points <= 0:
+                print("점수는 1 이상의 정수여야 합니다.")
+                continue
+            break
 
         return question, choices, answer, hint, explanation, points
 
