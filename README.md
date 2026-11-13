@@ -91,7 +91,7 @@ python3 main.py
 - 최고 점수 및 히스토리 관리
 - `state.json` 자동 저장
 - 저장 시 백업 파일 자동 생성
-- 최근 백업 10개만 유지
+- 최근 백업 5개만 유지
 - 중복 문제 추가 방지
 - 잘못된 입력 예외 처리
 
@@ -188,8 +188,7 @@ quizGN/
 | `backup_state_file` | 저장 파일을 백업 폴더에 복사하고 오래된 백업 파일을 정리한다. |
 | `save_state` | 사용자 퀴즈, 최고점, 기록을 JSON 파일로 저장한다. |
 | `update_high_score` | 현재 점수가 최고점보다 높으면 최고점을 갱신한다. |
-| `handle_exit_signal` | 종료 신호를 받으면 저장 후 프로그램을 종료한다. |
-| `register_signal_handlers` | 종료 신호 처리 함수를 등록한다. |
+| `register_signal_handlers` | ctrl+c 종료 처리 |
 | `run` | 메뉴를 반복 실행하면서 퀴즈 추가, 조회, 풀이, 삭제, 저장, 종료를 관리한다. |
 
 즉, 클래스를 사용하면 기능이 늘어나도 코드 구조가 흐트러지지 않고, 같은 형태의 데이터를 반복해서 처리하기 편해집니다.
@@ -211,7 +210,7 @@ quizGN/
 | 퀴즈 관리 | `add_quiz`, `show_quizzes`, `delete_quiz` |
 | 게임 진행 / 점수 | `play_quiz`, `update_high_score`, `show_history` |
 | 저장 / 복구 / 백업 | `load_state`, `backup_state_file`, `save_state` |
-| 종료 처리 / 실행 흐름 | `handle_exit_signal`, `register_signal_handlers`, `run` |
+| 종료 처리 / 실행 흐름 | `register_signal_handlers`, `run` |
 
 이렇게 나누면 입력 방식이 바뀌어도 게임 규칙에는 영향이 적고, 저장 방식이 바뀌어도 퀴즈 로직을 크게 수정하지 않아도 됩니다.
 

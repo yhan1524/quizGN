@@ -14,8 +14,8 @@ class QuizGame:
         self.file_name = os.path.join(self.base_dir, "state.json")          # state.json 파일 경로 저장
 
         self.default_quizzes = self.default_questions()                     # 기본 문제를 불러와 저장
-        self.reset_state()                                                  # 실제로 사용하는 퀴즈 목록
-        self.hint_penalty = 2
+        self.reset_state()                                                  
+        self.hint_penalty = 2                                               # 힌트 사용시 차감
 
         self.load_state()                                                   # 저장된 데이터가 있으면 불러옴
         self.register_signal_handlers()                                     # 갑작스런 종료시 저장 후 종료
@@ -217,8 +217,8 @@ class QuizGame:
         self.score = 0
         selected = random.sample(self.quizzes, int(count_in))
 
-        correct_quizzes = []
-        incorrect_quizzes = []
+        correct_quizzes = 0                 # 정답 카운트
+        # incorrect_quizzes = 0             # 오답 카운트
         hint_used_count = 0
 
         for idx, quiz in enumerate(selected, 1):
@@ -237,15 +237,13 @@ class QuizGame:
 
                 print("정답입니다!")
                 self.score += earned_points
-                correct_quizzes.append(quiz)
+                correct_quizzes += 1
             else:
                 print(f"오답입니다. 정답은 {quiz.answer}번입니다.")
-                incorrect_quizzes.append(quiz)
+               # incorrect_quizzes += 1
 
         print("\n=== 결과 요약 ===")
-        print(f"\n최종 점수: {self.score}")
-        print(f"정답: {len(correct_quizzes)}문제")
-        print(f"오답: {len(incorrect_quizzes)}문제")
+        print(f"\n최종 점수: {self.score} 점 ({correct_quizzes}/{count_in})")
         print(f"힌트사용: {hint_used_count} ")
 
         self.update_high_score()
@@ -287,7 +285,7 @@ class QuizGame:
             return
 
     def load_state(self):
-        self.reset_state()
+        self.reset_state()              # 초기화 후 불러오기, 불러오기 실패시 기본문제만 남김
 
         if not os.path.exists(self.file_name):
             return
@@ -332,7 +330,7 @@ class QuizGame:
             ]
             backups.sort(key=os.path.getmtime, reverse=True)
 
-            for old in backups[10:]:
+            for old in backups[5:]:             # 5개 이상이면 오래된 파일 삭제
                 os.remove(old)
         except OSError as e:
             print(f"백업 실패: {e}")
@@ -357,12 +355,12 @@ class QuizGame:
             self.high_score = self.score
             print("최고점 갱신!")
 
-    def handle_exit_signal(self, signum, frame):
-        self.save_state()
-        sys.exit(0)
+    def register_signal_handlers(self):             # 갑작스런 종료시 저장 후 종료
+        def handle_exit_signal(signum, frame):
+            self.save_state()
+            sys.exit(0)
 
-    def register_signal_handlers(self):
-        signal.signal(signal.SIGINT, self.handle_exit_signal)
+        signal.signal(signal.SIGINT, handle_exit_signal)
 
     def run(self):
         while True:
