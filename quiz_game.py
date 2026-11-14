@@ -5,7 +5,7 @@ import signal                                   # 종료신호처리
 import random                                   # 랜덤
 import shutil                                   # 파일 복사
 from datetime import datetime                   # 현재 날짜와 시간을가져옴, 백업 파일명 생성
-from quiz import Quiz                           # Quiz 클래스를 가져옴
+from quiz import Quiz                           # quiz.py에서 Quiz 클래스를 가져옴
 
 
 class QuizGame:
@@ -124,7 +124,7 @@ class QuizGame:
         explanation = input("해설을 입력하세요(선택): ").strip()
 
         while True:
-            points_input = input("점수를 입력하세요(기본값 10): ").strip()
+            points_input = input("점수를 입력하세요(기본값 10), 최대 10점입니다: ").strip()
             if not points_input:
                 points = 10
                 break
@@ -134,6 +134,9 @@ class QuizGame:
             points = int(points_input)
             if points <= 0:
                 print("점수는 1 이상의 정수여야 합니다.")
+                continue
+            if points > 10:
+                print("점수는 최대 10점까지 가능합니다.")
                 continue
             break
 
@@ -215,7 +218,7 @@ class QuizGame:
             return
 
         self.score = 0
-        selected = random.sample(self.quizzes, int(count_in))
+        selected = random.sample(self.quizzes, int(count_in))       # random(범위, 값)
 
         correct_quizzes = 0                 # 정답 카운트
         # incorrect_quizzes = 0             # 오답 카운트
@@ -362,7 +365,7 @@ class QuizGame:
 
         signal.signal(signal.SIGINT, handle_exit_signal)
 
-    def run(self):
+    def run(self):                                  
         while True:
             menu = self.input_menu()
 
